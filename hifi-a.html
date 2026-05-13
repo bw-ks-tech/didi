@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My — 홈</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root {
+    --ink:       #2a2622;
+    --ink-soft:  #6b635b;
+    --ink-faint: #b8afa6;
+    --paper:     #fbf7f1;
+    --bg:        #f2ece2;
+    --border:    #e8e0d2;
+
+    --peach:  #f6c5a8;
+    --rose:   #efb6b6;
+    --butter: #f5d985;
+    --sage:   #b9cdb0;
+    --sky:    #b3c9d9;
+    --lilac:  #cebed8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; }
+
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ─────────────────────────────────────────── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 60px;
+    background: rgba(251, 247, 241, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .nav-logo em { color: #c66; font-style: normal; }
+
+  .nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2px;
+  }
+  .nav-menu a {
+    display: block;
+    padding: 5px 11px;
+    font-size: 13.5px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.12s, color 0.12s;
+  }
+  .nav-menu a:hover   { background: rgba(42,38,34,.05); color: var(--ink); }
+  .nav-menu .active a { color: var(--ink); font-weight: 500; }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .nav-search-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 12px;
+    background: rgba(42,38,34,.06);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    min-width: 168px;
+    transition: background 0.12s;
+  }
+  .nav-search-pill:hover { background: rgba(42,38,34,.09); }
+  .nav-search-pill .kbd {
+    margin-left: auto;
+    font-size: 10.5px;
+    padding: 1px 5px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--ink-faint);
+  }
+
+  .avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--peach);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: opacity 0.12s;
+  }
+  .avatar:hover { opacity: 0.8; }
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    padding: 72px 60px 52px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-date {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    letter-spacing: 0.02em;
+    margin-bottom: 18px;
+  }
+
+  .hero-title {
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -2.5px;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  .hero-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    background: var(--paper);
+    border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 32px rgba(0,0,0,.07);
+    cursor: text;
+    transition: box-shadow 0.2s;
+  }
+  .hero-search:hover {
+    box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 14px 44px rgba(0,0,0,.1);
+  }
+  .hero-search svg { color: var(--ink-faint); flex-shrink: 0; }
+  .hero-search-text {
+    flex: 1;
+    font-size: 15px;
+    color: var(--ink-faint);
+    text-align: left;
+    font-family: 'Pretendard', sans-serif;
+  }
+  .hero-search-kbd {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+  }
+
+  /* decorative blobs / doodles */
+  .deco { position: absolute; pointer-events: none; }
+
+  /* ── GRID SECTION ─────────────────────────────────── */
+  .section {
+    padding: 0 60px 72px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .cat-card {
+    position: relative;
+    background: var(--paper);
+    border-radius: 20px;
+    padding: 22px 22px 18px;
+    aspect-ratio: 1.35 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,.03), 0 4px 20px rgba(0,0,0,.05);
+    transition: transform 0.2s cubic-bezier(.22,.68,0,1.2),
+                box-shadow 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  .cat-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 2px 4px rgba(0,0,0,.05), 0 16px 40px rgba(0,0,0,.09);
+  }
+
+  .cat-blob {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    right: -22px;
+    top: -22px;
+    opacity: 0.6;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .cat-card:hover .cat-blob {
+    opacity: 0.75;
+    transform: scale(1.08);
+  }
+
+  .cat-top { position: relative; z-index: 1; }
+  .cat-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 5px;
+  }
+  .cat-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+  }
+
+  .cat-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .cat-count {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -1.5px;
+    line-height: 1;
+  }
+  .cat-count-unit {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    margin-left: 3px;
+    letter-spacing: 0;
+  }
+
+  .cat-arrow {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(42,38,34,.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-soft);
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+  }
+  .cat-card:hover .cat-arrow {
+    background: rgba(42,38,34,.12);
+    color: var(--ink);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">My<em>.</em></a>
+
+  <ul class="nav-menu">
+    <li class="active"><a href="#">홈</a></li>
+    <li><a href="#">메모</a></li>
+    <li><a href="#">비밀번호</a></li>
+    <li><a href="#">할 일</a></li>
+    <li><a href="#">사진</a></li>
+    <li><a href="#">문서</a></li>
+    <li><a href="#">연락처</a></li>
+    <li><a href="#">가계부</a></li>
+    <li><a href="#">건강</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div class="nav-search-pill" role="button" aria-label="전체 검색">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      전체 검색…
+      <span class="kbd">⌘K</span>
+    </div>
+    <div class="avatar" title="내 계정">M</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Decorative blobs -->
+  <svg class="deco" style="left:88px;top:64px" width="68" height="52" viewBox="0 0 68 52" fill="none">
+    <path d="M8 36 C14 10 32 8 44 22 T 60 18" stroke="var(--peach)" stroke-width="3.5" stroke-linecap="round"/>
+  </svg>
+  <svg class="deco" style="right:108px;top:52px" width="52" height="52" viewBox="0 0 52 52" fill="none">
+    <circle cx="26" cy="26" r="10" stroke="var(--butter)" stroke-width="3"/>
+    <circle cx="26" cy="26" r="3" fill="var(--butter)"/>
+  </svg>
+  <svg class="deco" style="right:220px;top:148px" width="44" height="44" viewBox="0 0 44 44" fill="none">
+    <path d="M6 22 C14 6 30 6 38 22 S38 38 22 38" stroke="var(--rose)" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+  <svg class="deco" style="left:192px;top:168px" width="56" height="34" viewBox="0 0 56 34" fill="none">
+    <path d="M4 17 C10 4 20 28 28 17 S44 4 52 17" stroke="var(--sage)" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+  <svg class="deco" style="left:330px;top:40px" width="16" height="16" viewBox="0 0 16 16">
+    <circle cx="8" cy="8" r="5" fill="var(--sky)" opacity="0.7"/>
+  </svg>
+  <svg class="deco" style="right:340px;top:180px" width="12" height="12" viewBox="0 0 12 12">
+    <circle cx="6" cy="6" r="4" fill="var(--lilac)" opacity="0.7"/>
+  </svg>
+
+  <p class="hero-date">2026년 5월 13일 · 수요일</p>
+
+  <h1 class="hero-title">오늘, 무엇을 기록할까요?</h1>
+
+  <p class="hero-sub">나만의 작은 서랍 — 메모, 사진, 비밀번호 한 곳에.</p>
+
+  <div class="hero-search" role="search">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <span class="hero-search-text">검색어를 입력해 주세요</span>
+    <span class="hero-search-kbd">⌘K</span>
+  </div>
+</section>
+
+<!-- CATEGORY GRID -->
+<section class="section">
+  <p class="section-label">내 서랍</p>
+  <div class="cat-grid">
+
+    <a class="cat-card" href="#">
+      <div class="cat-blob" style="background:var(--peach)"></div>
+      <div class="cat-top">
+        <div class="cat-eyebrow">카테고리</div>
+        <div class="cat-name">메모 / 일기</div>
+      </div>
+      <div class="cat-bottom">
+        <div class="cat-count">128<span class="cat-count-unit">개</span></div>
+        <div class="cat-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="cat-card" href="#">
+      <div class="cat-blob" style="background:var(--rose)"></div>
+      <div class="cat-top">
+        <div class="cat-eyebrow">카테고리</div>
+        <div class="cat-name">비밀번호</div>
+      </div>
+      <div class="cat-bottom">
+        <div class="cat-count">42<span class="cat-count-unit">개</span></div>
+        <div class="cat-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="cat-card" href="#">
+      <div class="cat-blob" style="background:var(--butter)"></div>
+      <div class="cat-top">
+        <div class="cat-eyebrow">카테고리</div>
+        <div class="cat-name">할 일</div>
+      </div>
+      <div class="cat-bottom">
+        <div class="cat-count">17<span class="cat-count-unit">개</span></div>
+        <div class="cat-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="cat-card" href="#">
+      <div class="cat-blob" style="background:var(--sage)"></div>
+      <div class="cat-top">
+        <div class="cat-eyebrow">카테고리</div>
+        <div class="cat-name">사진</div>
+      </div>
+      <div class="cat-bottom">
+        <div class="cat-count">301<span class="cat-count-unit">장</span></div>
+        <div class="cat-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="cat-card" href="#">
+      <div class="cat-blob" style="background:var(--sky)"></div>
+      <div class="cat-top">
+        <div class="cat-eyebrow">카테고리</div>
+        <div class="cat-name">문서</div>
+      </div>
+      <div class="cat-bottom">
+        <div class="cat-count">54<span class="cat-count-unit">개</span></div>
+        <div class="cat-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="cat-card" href="#">
+      <div class="cat-blob" style="background:var(--lilac)"></div>
+      <div class="cat-top">
+        <div class="cat-eyebrow">카테고리</div>
+        <div class="cat-name">연락처</div>
+      </div>
+      <div class="cat-bottom">
+        <div class="cat-count">88<span class="cat-count-unit">명</span></div>
+        <div class="cat-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="cat-card" href="#">
+      <div class="cat-blob" style="background:var(--peach)"></div>
+      <div class="cat-top">
+        <div class="cat-eyebrow">카테고리</div>
+        <div class="cat-name">가계부</div>
+      </div>
+      <div class="cat-bottom">
+        <div class="cat-count" style="font-size:22px;letter-spacing:-0.5px">6월<span class="cat-count-unit" style="font-size:12px">진행 중</span></div>
+        <div class="cat-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="cat-card" href="#">
+      <div class="cat-blob" style="background:var(--sage)"></div>
+      <div class="cat-top">
+        <div class="cat-eyebrow">카테고리</div>
+        <div class="cat-name">건강 기록</div>
+      </div>
+      <div class="cat-bottom">
+        <div class="cat-count">21<span class="cat-count-unit">개</span></div>
+        <div class="cat-arrow">→</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+</body>
+</html>
