@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>오늘의 건강 식단</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+    background: #EFE6D4;
+    min-height: 100vh;
+    color: #3D2E1F;
+  }
+  body {
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 20px;
+    background:
+      radial-gradient(at 20% 10%, #F0E6F4 0%, transparent 50%),
+      radial-gradient(at 80% 90%, #E8DCEE 0%, transparent 50%),
+      #EAE0EF;
+  }
+  #root { width: 100%; display: flex; justify-content: center; }
+  button { font-family: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="screens.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": [
+    "#B49ACB",
+    "#8E72A8",
+    "#EFE7F3"
+  ],
+  "textScale": 1,
+  "resultLayout": "card",
+  "screen": "result"
+}/*EDITMODE-END*/;
+
+// 팔레트 정의 — [accent, accentDeep, bgTone]
+const PALETTES = {
+  '#E89B5C': { // 따뜻한 주황 (기본)
+    bg: '#F7EFE0',
+    card: '#FFFCF5',
+    border: '#EADFC9',
+    text: '#3D2E1F',
+    muted: '#8A7560',
+    accent: '#E89B5C',
+    accentDeep: '#C97A3A',
+    accentSoft: '#FBE5CC',
+    accentShadow: '#B36A2C',
+  },
+  '#D97757': { // 깊은 테라코타
+    bg: '#F5EBDD',
+    card: '#FFFCF4',
+    border: '#E8DCC4',
+    text: '#3A2818',
+    muted: '#8A6F58',
+    accent: '#D97757',
+    accentDeep: '#B45A3E',
+    accentSoft: '#F7DCC8',
+    accentShadow: '#9D4A2E',
+  },
+  '#C8946A': { // 카멜 베이지
+    bg: '#F4ECDB',
+    card: '#FFFBF1',
+    border: '#E5D8BD',
+    text: '#3C2D1B',
+    muted: '#8C7359',
+    accent: '#C8946A',
+    accentDeep: '#A0734A',
+    accentSoft: '#F1E0C6',
+    accentShadow: '#86603E',
+  },
+  '#7A9A6E': { // 세이지 그린 (부드러운 자연 톤)
+    bg: '#F1ECDB',
+    card: '#FBF8EE',
+    border: '#DFD8BF',
+    text: '#2F2E20',
+    muted: '#736E50',
+    accent: '#7A9A6E',
+    accentDeep: '#5C7E52',
+    accentSoft: '#DDE7CE',
+    accentShadow: '#476841',
+  },
+  '#B49ACB': { // 옅은 보라 — 따뜻한 라벤더 (기본)
+    bg: '#F1EBF5',
+    card: '#FBF7FD',
+    border: '#E1D5E8',
+    text: '#2E2438',
+    muted: '#7C6B8C',
+    accent: '#B49ACB',
+    accentDeep: '#8E72A8',
+    accentSoft: '#E5D9EE',
+    accentShadow: '#6B527F',
+  },
+};
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const accent = Array.isArray(t.palette) ? t.palette[0] : t.palette;
+  const theme = PALETTES[accent] || PALETTES['#B49ACB'];
+
+  const [screen, setScreen] = React.useState(t.screen || 'home');
+  const [mealId, setMealId] = React.useState(meals[0].id);
+  const [voiceOn, setVoiceOn] = React.useState(false);
+  const meal = meals.find(m => m.id === mealId) || meals[0];
+
+  // tweak으로 화면 강제 점프
+  React.useEffect(() => {
+    if (t.screen && t.screen !== screen) setScreen(t.screen);
+    // eslint-disable-next-line
+  }, [t.screen]);
+
+  const pickRandom = () => {
+    setScreen('loading');
+    // 이전 추천과 다른 메뉴 무작위 선택
+    setTimeout(() => {
+      const others = meals.filter(m => m.id !== mealId);
+      const next = others[Math.floor(Math.random() * others.length)];
+      setMealId(next.id);
+      setScreen('result');
+    }, 1400);
+  };
+
+  let currentScreen;
+  if (screen === 'home') {
+    currentScreen = <HomeScreen onPick={pickRandom} theme={theme} scale={t.textScale} voiceOn={voiceOn} setVoiceOn={setVoiceOn} />;
+  } else if (screen === 'loading') {
+    currentScreen = <LoadingScreen theme={theme} scale={t.textScale} />;
+  } else if (screen === 'result') {
+    currentScreen = <ResultScreen
+      meal={meal}
+      onAgain={pickRandom}
+      onDetail={() => setScreen('detail')}
+      onHome={() => setScreen('home')}
+      theme={theme} scale={t.textScale} voiceOn={voiceOn}
+      layout={t.resultLayout}
+    />;
+  } else if (screen === 'detail') {
+    currentScreen = <DetailScreen meal={meal} onBack={() => setScreen('result')} theme={theme} scale={t.textScale} />;
+  }
+
+  return (
+    <div data-screen-label={`0${['home','loading','result','detail'].indexOf(screen)+1} ${screen}`}>
+      <IOSDevice width={402} height={874}>
+        <div style={{ height: '100%', overflow: 'auto', background: theme.bg }}>
+          {currentScreen}
+        </div>
+      </IOSDevice>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="화면 이동" />
+        <TweakRadio label="화면" value={screen}
+          options={['home', 'result', 'detail']}
+          onChange={(v) => { setScreen(v); setTweak('screen', v); }} />
+
+        <TweakSection label="분위기" />
+        <TweakColor label="색상 팔레트" value={t.palette}
+          options={[
+            ['#B49ACB', '#8E72A8', '#EFE7F3'],
+            ['#E89B5C', '#C97A3A', '#F7EAD6'],
+            ['#D97757', '#B45A3E', '#F5EBDD'],
+            ['#C8946A', '#A0734A', '#F4ECDB'],
+            ['#7A9A6E', '#5C7E52', '#F1ECDB'],
+          ]}
+          onChange={(v) => setTweak('palette', v)} />
+
+        <TweakSection label="접근성" />
+        <TweakRadio label="글씨 크기"
+          value={t.textScale === 0.9 ? '보통' : t.textScale === 1.0 ? '큼' : '아주 큼'}
+          options={['보통', '큼', '아주 큼']}
+          onChange={(v) => setTweak('textScale',
+            v === '보통' ? 0.9 : v === '큼' ? 1.0 : 1.15)} />
+        <TweakToggle label="음성 안내 표시" value={voiceOn}
+          onChange={setVoiceOn} />
+
+        <TweakSection label="결과 화면 레이아웃" />
+        <TweakRadio label="음식 사진" value={t.resultLayout}
+          options={['card', 'full']}
+          onChange={(v) => setTweak('resultLayout', v)} />
+      </TweaksPanel>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
