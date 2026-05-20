@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>오늘의 건강 식단</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    color: #3D2E1F;
+  }
+  body {
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 20px;
+    background:
+      radial-gradient(at 20% 10%, #F0E6F4 0%, transparent 50%),
+      radial-gradient(at 80% 90%, #E8DCEE 0%, transparent 50%),
+      #EAE0EF;
+  }
+  #root { width: 100%; display: flex; justify-content: center; }
+  button { font-family: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- ═══════════════════════ ios-frame.jsx ═══════════════════════ -->
+<script type="text/babel" data-presets="env,react">
+// iOS.jsx — Simplified iOS 26 (Liquid Glass) device frame
+function IOSStatusBar({ dark = false, time = '9:41' }) {
+  const c = dark ? '#fff' : '#000';
+  return (
+    <div style={{
+      display: 'flex', gap: 154, alignItems: 'center', justifyContent: 'center',
+      padding: '21px 24px 19px', boxSizing: 'border-box',
+      position: 'relative', zIndex: 20, width: '100%',
+    }}>
+      <div style={{ flex: 1, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 1.5 }}>
+        <span style={{
+          fontFamily: '-apple-system, "SF Pro", system-ui', fontWeight: 590,
+          fontSize: 17, lineHeight: '22px', color: c,
+        }}>{time}</span>
+      </div>
+      <div style={{ flex: 1, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, paddingTop: 1, paddingRight: 1 }}>
+        <svg width="19" height="12" viewBox="0 0 19 12">
+          <rect x="0" y="7.5" width="3.2" height="4.5" rx="0.7" fill={c}/>
+          <rect x="4.8" y="5" width="3.2" height="7" rx="0.7" fill={c}/>
+          <rect x="9.6" y="2.5" width="3.2" height="9.5" rx="0.7" fill={c}/>
+          <rect x="14.4" y="0" width="3.2" height="12" rx="0.7" fill={c}/>
+        </svg>
+        <svg width="17" height="12" viewBox="0 0 17 12">
+          <path d="M8.5 3.2C10.8 3.2 12.9 4.1 14.4 5.6L15.5 4.5C13.7 2.7 11.2 1.5 8.5 1.5C5.8 1.5 3.3 2.7 1.5 4.5L2.6 5.6C4.1 4.1 6.2 3.2 8.5 3.2Z" fill={c}/>
+          <path d="M8.5 6.8C9.9 6.8 11.1 7.3 12 8.2L13.1 7.1C11.8 5.9 10.2 5.1 8.5 5.1C6.8 5.1 5.2 5.9 3.9 7.1L5 8.2C5.9 7.3 7.1 6.8 8.5 6.8Z" fill={c}/>
+          <circle cx="8.5" cy="10.5" r="1.5" fill={c}/>
+        </svg>
+        <svg width="27" height="13" viewBox="0 0 27 13">
+          <rect x="0.5" y="0.5" width="23" height="12" rx="3.5" stroke={c} strokeOpacity="0.35" fill="none"/>
+          <rect x="2" y="2" width="20" height="9" rx="2" fill={c}/>
+          <path d="M25 4.5V8.5C25.8 8.2 26.5 7.2 26.5 6.5C26.5 5.8 25.8 4.8 25 4.5Z" fill={c} fillOpacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function IOSGlassPill({ children, dark = false, style = {} }) {
+  return (
+    <div style={{
+      height: 44, minWidth: 44, borderRadius: 9999,
+      position: 'relative', overflow: 'hidden',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      boxShadow: dark
+        ? '0 2px 6px rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.2)'
+        : '0 1px 3px rgba(0,0,0,0.07), 0 3px 10px rgba(0,0,0,0.06)',
+      ...style,
+    }}>
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 9999,
+        backdropFilter: 'blur(12px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+        background: dark ? 'rgba(120,120,128,0.28)' : 'rgba(255,255,255,0.5)',
+      }} />
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 9999,
+        boxShadow: dark
+          ? 'inset 1.5px 1.5px 1px rgba(255,255,255,0.15), inset -1px -1px 1px rgba(255,255,255,0.08)'
+          : 'inset 1.5px 1.5px 1px rgba(255,255,255,0.7), inset -1px -1px 1px rgba(255,255,255,0.4)',
+        border: dark ? '0.5px solid rgba(255,255,255,0.15)' : '0.5px solid rgba(0,0,0,0.06)',
+      }} />
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', padding: '0 4px' }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function IOSNavBar({ title, leading, trailing, dark = false, blur = true, style = {} }) {
+  const fg = dark ? '#fff' : '#000';
+  return (
+    <div style={{
+      position: 'relative', zIndex: 10, display: 'flex',
+      alignItems: 'center', minHeight: 52, padding: '0 16px',
+      background: blur
+        ? (dark ? 'rgba(28,28,30,0.72)' : 'rgba(249,249,251,0.72)')
+        : 'transparent',
+      backdropFilter: blur ? 'blur(20px) saturate(180%)' : 'none',
+      WebkitBackdropFilter: blur ? 'blur(20px) saturate(180%)' : 'none',
+      borderBottom: blur
+        ? (dark ? '0.5px solid rgba(255,255,255,0.12)' : '0.5px solid rgba(60,60,67,0.18)')
+        : 'none',
+      boxSizing: 'border-box', ...style,
+    }}>
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>{leading}</div>
+      {title && <div style={{
+        position: 'absolute', left: '50%', transform: 'translateX(-50%)',
+        fontSize: 17, fontWeight: 590, color: fg,
+        fontFamily: '-apple-system, "SF Pro", system-ui',
+        whiteSpace: 'nowrap', pointerEvents: 'none',
+      }}>{title}</div>}
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>{trailing}</div>
+    </div>
+  );
+}
+
+function IOSList({ children, inset = false, style = {} }) {
+  return (
+    <div style={{
+      margin: inset ? '0 16px' : 0,
+      borderRadius: inset ? 12 : 0,
+      background: 'rgba(255,255,255,0.8)',
+      overflow: 'hidden',
+      boxShadow: inset ? '0 0 0 0.5px rgba(60,60,67,0.12)' : 'none',
+      ...style,
+    }}>
+      {children}
+    </div>
+  );
+}
+
+function IOSListRow({ children, style = {} }) {
+  return (
+    <div style={{
+      minHeight: 44, padding: '8px 16px',
+      display: 'flex', alignItems: 'center',
+      borderBottom: '0.5px solid rgba(60,60,67,0.12)',
+      ...style,
+    }}>
+      {children}
+    </div>
+  );
+}
+
+function IOSDevice({ children, width = 402, height = 874 }) {
+  const r = 54;
+  const scale = Math.min(1, (window.innerWidth - 32) / width);
+
+  return (
+    <div style={{
+      position: 'relative',
+      width: width * scale,
+      height: height * scale,
+      borderRadius: r * scale,
+      boxShadow: '0 0 0 1px rgba(0,0,0,0.08), 0 32px 80px rgba(0,0,0,0.28), 0 8px 24px rgba(0,0,0,0.18)',
+      overflow: 'hidden',
+      background: '#1a1a1a',
+      flexShrink: 0,
+    }}>
+      {/* Screen */}
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: r * scale,
+        overflow: 'hidden', background: '#fff',
+        transform: `scale(${scale})`,
+        transformOrigin: 'top left',
+        width: width, height: height,
+      }}>
+        {/* Dynamic island */}
+        <div style={{
+          position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
+          width: 120, height: 36, borderRadius: 20,
+          background: '#000', zIndex: 100,
+        }} />
+        {children}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, {
+  IOSStatusBar, IOSGlassPill, IOSNavBar, IOSList, IOSListRow, IOSDevice,
+});
+</script>
+
+<!-- ═══════════════════════ tweaks-panel.jsx ═══════════════════════ -->
+<script type="text/babel" data-presets="env,react">
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+  .twk-field{appearance:none;box-sizing:border-box;width:100%;min-width:0;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;
+    overflow-wrap:anywhere}
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+  .twk-num{display:flex;align-items:center;box-sizing:border-box;min-width:0;height:26px;padding:0 0 0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
+  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
+    user-select:none;padding-right:8px}
+  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
+    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
+    outline:none;color:inherit;-moz-appearance:textfield}
+  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
+    -webkit-appearance:none;margin:0}
+  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
+    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
+  .twk-swatch{appearance:none;-webkit-appearance:none;width:56px;height:22px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:6px;padding:0;cursor:default;
+    background:transparent;flex-shrink:0}
+  .twk-swatch::-webkit-color-swatch-wrapper{padding:0}
+  .twk-swatch::-webkit-color-swatch{border:0;border-radius:5.5px}
+  .twk-swatch::-moz-color-swatch{border:0;border-radius:5.5px}
+  .twk-chips{display:flex;gap:6px}
+  .twk-chip{position:relative;appearance:none;flex:1;min-width:0;height:46px;
+    padding:0;border:0;border-radius:6px;overflow:hidden;cursor:default;
+    box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);
+    transition:transform .12s cubic-bezier(.3,.7,.4,1),box-shadow .12s}
+  .twk-chip:hover{transform:translateY(-1px);
+    box-shadow:0 0 0 .5px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.12)}
+  .twk-chip[data-on="1"]{box-shadow:0 0 0 1.5px rgba(0,0,0,.85),
+    0 2px 6px rgba(0,0,0,.15)}
+  .twk-chip>span{position:absolute;top:0;bottom:0;right:0;width:34%;
+    display:flex;flex-direction:column;box-shadow:-1px 0 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i{flex:1;box-shadow:0 -1px 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i:first-child{box-shadow:none}
+  .twk-chip svg{position:absolute;top:6px;left:6px;width:13px;height:13px;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+`;
+
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+    window.dispatchEvent(new CustomEvent('tweakchange', { detail: edits }));
+  }, []);
+  return [values, setTweak];
+}
+
+function TweaksPanel({ title = 'Tweaks', noDeckControls = false, children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(clampToViewport) : null;
+    if (ro) { ro.observe(document.documentElement); return () => ro.disconnect(); }
+    window.addEventListener('resize', clampToViewport);
+    return () => window.removeEventListener('resize', clampToViewport);
+  }, [open, clampToViewport]);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+  };
+
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy),
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel" data-noncommentable=""
+           style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" aria-label="Close tweaks"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">{children}</div>
+      </div>
+    </>
+  );
+}
+
+function TweakSection({ label, children }) {
+  return (
+    <>
+      <div className="twk-sect">{label}</div>
+      {children}
+    </>
+  );
+}
+
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
+  return (
+    <TweakRow label={label} value={`${value}${unit}`}>
+      <input type="range" className="twk-slider" min={min} max={max} step={step}
+             value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </TweakRow>
+  );
+}
+
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
+              role="switch" aria-checked={!!value}
+              onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+
+function TweakSelect({ label, value, options, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => {
+          const v = typeof o === 'object' ? o.value : o;
+          const l = typeof o === 'object' ? o.label : o;
+          return <option key={v} value={v}>{l}</option>;
+        })}
+      </select>
+    </TweakRow>
+  );
+}
+
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+
+  const labelLen = (o) => String(typeof o === 'object' ? o.label : o).length;
+  const maxLen = options.reduce((m, o) => Math.max(m, labelLen(o)), 0);
+  const fitsAsSegments = maxLen <= ({ 2: 16, 3: 10 }[options.length] ?? 0);
+
+  if (!fitsAsSegments) {
+    const resolve = (s) => {
+      const m = options.find((o) => String(typeof o === 'object' ? o.value : o) === s);
+      return m === undefined ? s : typeof m === 'object' ? m.value : m;
+    };
+    return <TweakSelect label={label} value={value} options={options}
+                        onChange={(s) => onChange(resolve(s))} />;
+  }
+
+  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
+  const n = opts.length;
+
+  const segAt = (clientX) => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor(((clientX - r.left - 2) / inner) * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+
+  const onPointerDown = (e) => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = (ev) => {
+      if (!trackRef.current) return;
+      const v = segAt(ev.clientX);
+      if (v !== valueRef.current) onChange(v);
+    };
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  return (
+    <TweakRow label={label}>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
+           className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb"
+             style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
+                      width: `calc((100% - 4px) / ${n})` }} />
+        {opts.map((o) => (
+          <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakText({ label, value, placeholder, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <input className="twk-field" type="text" value={value} placeholder={placeholder}
+             onChange={(e) => onChange(e.target.value)} />
+    </TweakRow>
+  );
+}
+
+function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) {
+  const clamp = (n) => {
+    if (min != null && n < min) return min;
+    if (max != null && n > max) return max;
+    return n;
+  };
+  const startRef = React.useRef({ x: 0, val: 0 });
+  const onScrubStart = (e) => {
+    e.preventDefault();
+    startRef.current = { x: e.clientX, val: value };
+    const decimals = (String(step).split('.')[1] || '').length;
+    const move = (ev) => {
+      const dx = ev.clientX - startRef.current.x;
+      const raw = startRef.current.val + dx * step;
+      const snapped = Math.round(raw / step) * step;
+      onChange(clamp(Number(snapped.toFixed(decimals))));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return (
+    <div className="twk-num">
+      <span className="twk-num-lbl" onPointerDown={onScrubStart}>{label}</span>
+      <input type="number" value={value} min={min} max={max} step={step}
+             onChange={(e) => onChange(clamp(Number(e.target.value)))} />
+      {unit && <span className="twk-num-unit">{unit}</span>}
+    </div>
+  );
+}
+
+function __twkIsLight(hex) {
+  const h = String(hex).replace('#', '');
+  const x = h.length === 3 ? h.replace(/./g, (c) => c + c) : h.padEnd(6, '0');
+  const n = parseInt(x.slice(0, 6), 16);
+  if (Number.isNaN(n)) return true;
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return r * 299 + g * 587 + b * 114 > 148000;
+}
+
+const __TwkCheck = ({ light }) => (
+  <svg viewBox="0 0 14 14" aria-hidden="true">
+    <path d="M3 7.2 5.8 10 11 4.2" fill="none" strokeWidth="2.2"
+          strokeLinecap="round" strokeLinejoin="round"
+          stroke={light ? 'rgba(0,0,0,.78)' : '#fff'} />
+  </svg>
+);
+
+function TweakColor({ label, value, options, onChange }) {
+  if (!options || !options.length) {
+    return (
+      <div className="twk-row twk-row-h">
+        <div className="twk-lbl"><span>{label}</span></div>
+        <input type="color" className="twk-swatch" value={value}
+               onChange={(e) => onChange(e.target.value)} />
+      </div>
+    );
+  }
+  const key = (o) => String(JSON.stringify(o)).toLowerCase();
+  const cur = key(value);
+  return (
+    <TweakRow label={label}>
+      <div className="twk-chips" role="radiogroup">
+        {options.map((o, i) => {
+          const colors = Array.isArray(o) ? o : [o];
+          const [hero, ...rest] = colors;
+          const sup = rest.slice(0, 4);
+          const on = key(o) === cur;
+          return (
+            <button key={i} type="button" className="twk-chip" role="radio"
+                    aria-checked={on} data-on={on ? '1' : '0'}
+                    aria-label={colors.join(', ')} title={colors.join(' · ')}
+                    style={{ background: hero }}
+                    onClick={() => onChange(o)}>
+              {sup.length > 0 && (
+                <span>
+                  {sup.map((c, j) => <i key={j} style={{ background: c }} />)}
+                </span>
+              )}
+              {on && <__TwkCheck light={__twkIsLight(hero)} />}
+            </button>
+          );
+        })}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakButton({ label, onClick, secondary = false }) {
+  return (
+    <button type="button" className={secondary ? 'twk-btn secondary' : 'twk-btn'}
+            onClick={onClick}>{label}</button>
+  );
+}
+
+Object.assign(window, {
+  useTweaks, TweaksPanel, TweakSection, TweakRow,
+  TweakSlider, TweakToggle, TweakRadio, TweakSelect,
+  TweakText, TweakNumber, TweakColor, TweakButton,
+});
+</script>
+
+<!-- ═══════════════════════ screens.jsx ═══════════════════════ -->
+<script type="text/babel" data-presets="env,react">
+const meals = [
+  {
+    id: 'tofu',
+    name: '두부 된장국',
+    side: '잡곡밥 · 시금치무침',
+    badge: '단백질',
+    benefit: '뼈 건강에 좋은 칼슘이 풍부해요',
+    color: '#E89B5C',
+    swatch: ['#F5E6D3', '#D4B896', '#8B7355'],
+    kcal: 420,
+    salt: '낮음',
+    time: 20,
+    ingredients: ['두부 한 모', '된장 두 큰술', '시금치 한 줌', '잡곡밥 한 공기', '대파 약간'],
+    steps: [
+      '냄비에 물 두 컵을 끓여요',
+      '된장을 풀고 두부를 넣어요',
+      '대파를 넣고 한 번 더 끓이면 끝',
+    ],
+    tips: '소금 대신 된장으로 간을 맞춰 혈압에 부담이 적어요.',
+  },
+  {
+    id: 'pumpkin',
+    name: '단호박죽',
+    side: '나박김치 · 호두',
+    badge: '소화 편함',
+    benefit: '소화가 잘 되고 속이 따뜻해져요',
+    color: '#F2A65A',
+    swatch: ['#FFE4B5', '#E89B3C', '#A0522D'],
+    kcal: 360,
+    salt: '아주 낮음',
+    time: 25,
+    ingredients: ['단호박 반 개', '찹쌀가루 두 큰술', '물 세 컵', '소금 약간', '호두 다섯 알'],
+    steps: [
+      '단호박을 쪄서 으깨주세요',
+      '물과 함께 끓이며 찹쌀가루를 풀어요',
+      '걸쭉해지면 호두를 올려요',
+    ],
+    tips: '치아가 불편하셔도 부드럽게 드실 수 있어요.',
+  },
+  {
+    id: 'fish',
+    name: '고등어구이',
+    side: '현미밥 · 미역국 · 무생채',
+    badge: '오메가-3',
+    benefit: '혈관과 두뇌 건강을 도와줘요',
+    color: '#C97B5C',
+    swatch: ['#E8C8A8', '#B07D5B', '#5C4033'],
+    kcal: 510,
+    salt: '보통',
+    time: 15,
+    ingredients: ['고등어 한 토막', '현미밥 한 공기', '미역국 한 그릇', '무 약간', '레몬'],
+    steps: [
+      '고등어에 소금을 살짝 뿌려요',
+      '약한 불에서 천천히 구워요',
+      '레몬을 살짝 짜서 곁들여요',
+    ],
+    tips: '일주일에 두 번, 등푸른 생선을 권장해요.',
+  },
+  {
+    id: 'chicken',
+    name: '닭가슴살 채소비빔',
+    side: '잡곡밥 · 참기름 한 방울',
+    badge: '근력',
+    benefit: '근육을 지키는 단백질이 가득해요',
+    color: '#D89A4C',
+    swatch: ['#F2DDB5', '#C29250', '#7A5230'],
+    kcal: 480,
+    salt: '낮음',
+    time: 20,
+    ingredients: ['삶은 닭가슴살', '잡곡밥 한 공기', '오이·당근·양상추', '참기름 한 방울', '간장 약간'],
+    steps: [
+      '닭가슴살을 부드럽게 삶아 찢어요',
+      '채소를 잘게 썰어 그릇에 담아요',
+      '참기름을 두르고 살살 비벼요',
+    ],
+    tips: '간장은 아주 조금만! 채소의 단맛을 즐겨요.',
+  },
+  {
+    id: 'porridge',
+    name: '전복 야채죽',
+    side: '나박김치 · 김',
+    badge: '기력 회복',
+    benefit: '기력이 없을 때 든든하게 채워줘요',
+    color: '#A88C5F',
+    swatch: ['#E8DCC0', '#A88C5F', '#5C4A2A'],
+    kcal: 390,
+    salt: '낮음',
+    time: 30,
+    ingredients: ['전복 한 개', '쌀 반 컵', '당근·애호박', '참기름', '물 네 컵'],
+    steps: [
+      '쌀을 참기름에 살짝 볶아요',
+      '전복과 채소를 넣고 푹 끓여요',
+      '소금으로 아주 약하게 간해요',
+    ],
+    tips: '아침이나 컨디션이 안 좋은 날에 좋아요.',
+  },
+];
+
+function MealVisual({ meal, size = 220, rounded = 28 }) {
+  const [a, b, c] = meal.swatch;
+  return (
+    <div style={{
+      width: size, height: size, borderRadius: rounded,
+      background: `linear-gradient(135deg, ${a} 0%, ${b} 100%)`,
+      position: 'relative', overflow: 'hidden',
+      boxShadow: `inset 0 -8px 24px ${c}33, 0 8px 24px rgba(60,40,20,0.12)`,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      flexShrink: 0,
+    }}>
+      <div style={{
+        width: size * 0.78, height: size * 0.78, borderRadius: '50%',
+        background: `radial-gradient(circle at 35% 30%, ${a}, ${b} 70%, ${c})`,
+        boxShadow: `inset 0 -10px 30px ${c}55, inset 0 4px 12px rgba(255,255,255,0.4)`,
+        position: 'relative',
+      }}>
+        <div style={{
+          position: 'absolute', top: '18%', left: '22%',
+          width: '26%', height: '18%', borderRadius: '50%',
+          background: 'rgba(255,255,255,0.35)', filter: 'blur(6px)',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: 10, left: 0, right: 0,
+          textAlign: 'center', fontSize: Math.max(11, size * 0.05),
+          color: 'rgba(60,40,20,0.45)', fontFamily: 'ui-monospace, monospace',
+          letterSpacing: '0.05em',
+        }}>음식 사진</div>
+      </div>
+    </div>
+  );
+}
+
+function HomeScreen({ onPick, theme, scale, voiceOn, setVoiceOn }) {
+  const [pressed, setPressed] = React.useState(false);
+
+  return (
+    <div style={{
+      minHeight: '100%',
+      background: theme.bg,
+      padding: '80px 28px 40px',
+      display: 'flex', flexDirection: 'column',
+      gap: 28,
+    }}>
+      <div>
+        <div style={{ fontSize: 22 * scale, color: theme.muted, fontWeight: 500, marginBottom: 8 }}>
+          {new Date().toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' })}
+        </div>
+        <div style={{ fontSize: 38 * scale, color: theme.text, fontWeight: 800, lineHeight: 1.25 }}>
+          안녕하세요,<br />김영자 어르신
+        </div>
+        <div style={{ fontSize: 24 * scale, color: theme.muted, fontWeight: 500, marginTop: 12, lineHeight: 1.4 }}>
+          오늘은 어떤 걸 드실까요?
+        </div>
+      </div>
+
+      <button
+        onPointerDown={() => setPressed(true)}
+        onPointerUp={() => setPressed(false)}
+        onPointerLeave={() => setPressed(false)}
+        onClick={onPick}
+        style={{
+          marginTop: 12,
+          border: 'none', cursor: 'pointer',
+          background: `linear-gradient(180deg, ${theme.accent} 0%, ${theme.accentDeep} 100%)`,
+          color: '#fff',
+          borderRadius: 36,
+          padding: '40px 28px',
+          boxShadow: pressed
+            ? `0 4px 0 ${theme.accentShadow}, 0 6px 16px ${theme.accentShadow}66`
+            : `0 10px 0 ${theme.accentShadow}, 0 14px 30px ${theme.accentShadow}66`,
+          transform: pressed ? 'translateY(6px)' : 'translateY(0)',
+          transition: 'transform 0.12s, box-shadow 0.12s',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
+          fontFamily: 'inherit',
+        }}
+      >
+        <div style={{
+          width: 88, height: 88, borderRadius: '50%',
+          background: 'rgba(255,255,255,0.22)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 56,
+        }}>
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <ellipse cx="26" cy="22" rx="18" ry="12" fill="#fff" opacity="0.95" />
+            <ellipse cx="26" cy="22" rx="14" ry="8" fill={theme.accentDeep} opacity="0.4" />
+            <rect x="23" y="22" width="6" height="22" rx="3" fill="#fff" opacity="0.95" />
+          </svg>
+        </div>
+        <div style={{ fontSize: 42 * scale, fontWeight: 800, letterSpacing: '-0.01em' }}>
+          오늘의 식단<br />추천 받기
+        </div>
+        <div style={{ fontSize: 20 * scale, fontWeight: 500, opacity: 0.92 }}>
+          이 버튼을 한 번 눌러주세요
+        </div>
+      </button>
+
+      <div style={{ display: 'flex', gap: 14, marginTop: 8 }}>
+        <button style={{
+          flex: 1, padding: '22px 14px',
+          background: theme.card, color: theme.text,
+          border: `2px solid ${theme.border}`,
+          borderRadius: 22, cursor: 'pointer',
+          fontFamily: 'inherit',
+          textAlign: 'left',
+        }}>
+          <div style={{ fontSize: 18 * scale, color: theme.muted, fontWeight: 600, marginBottom: 4 }}>
+            어제 드신 것
+          </div>
+          <div style={{ fontSize: 22 * scale, color: theme.text, fontWeight: 700 }}>
+            미역국
+          </div>
+        </button>
+        <button
+          onClick={() => setVoiceOn(!voiceOn)}
+          style={{
+            flex: 1, padding: '22px 14px',
+            background: voiceOn ? theme.accentSoft : theme.card,
+            color: theme.text,
+            border: `2px solid ${voiceOn ? theme.accent : theme.border}`,
+            borderRadius: 22, cursor: 'pointer',
+            fontFamily: 'inherit',
+            display: 'flex', alignItems: 'center', gap: 10,
+            justifyContent: 'center',
+          }}
+        >
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M4 11v6h4l5 4V7L8 11H4z" fill={theme.text} />
+            {voiceOn && <path d="M17 9c2 1.5 2 8.5 0 10" stroke={theme.text} strokeWidth="2.5" strokeLinecap="round" fill="none" />}
+            {voiceOn && <path d="M20 6c4 3 4 13 0 16" stroke={theme.text} strokeWidth="2.5" strokeLinecap="round" fill="none" />}
+          </svg>
+          <div style={{ fontSize: 22 * scale, fontWeight: 700 }}>
+            소리 {voiceOn ? '켬' : '끔'}
+          </div>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function LoadingScreen({ theme, scale }) {
+  return (
+    <div style={{
+      minHeight: '100%', background: theme.bg,
+      padding: '120px 28px',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center', gap: 36,
+    }}>
+      <div style={{
+        width: 160, height: 160, borderRadius: '50%',
+        background: `conic-gradient(${theme.accent} 0deg, ${theme.accentSoft} 120deg, ${theme.accent} 360deg)`,
+        animation: 'spin 1.6s linear infinite',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <div style={{
+          width: 132, height: 132, borderRadius: '50%',
+          background: theme.bg,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 60,
+        }}>
+          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+            <ellipse cx="36" cy="36" rx="28" ry="20" fill={theme.accent} opacity="0.85" />
+            <ellipse cx="36" cy="32" rx="22" ry="14" fill={theme.accentDeep} opacity="0.45" />
+          </svg>
+        </div>
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: 36 * scale, color: theme.text, fontWeight: 800, marginBottom: 12 }}>
+          오늘의 식단을<br />고르고 있어요
+        </div>
+        <div style={{ fontSize: 22 * scale, color: theme.muted, fontWeight: 500 }}>
+          잠시만 기다려주세요
+        </div>
+      </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+}
+
+function ResultScreen({ meal, onAgain, onDetail, onHome, theme, scale, voiceOn, layout }) {
+  return (
+    <div style={{
+      minHeight: '100%', background: theme.bg,
+      display: 'flex', flexDirection: 'column',
+    }}>
+      <div style={{ padding: '70px 28px 0' }}>
+        <button onClick={onHome} style={{
+          background: 'transparent', border: 'none', cursor: 'pointer',
+          color: theme.muted, fontSize: 22 * scale, fontWeight: 600,
+          padding: 0, fontFamily: 'inherit',
+          display: 'flex', alignItems: 'center', gap: 6,
+        }}>
+          <span style={{ fontSize: 28 * scale }}>‹</span> 처음으로
+        </button>
+        <div style={{
+          marginTop: 18,
+          display: 'inline-block',
+          background: theme.accentSoft, color: theme.accentDeep,
+          padding: '10px 20px', borderRadius: 999,
+          fontSize: 20 * scale, fontWeight: 700,
+        }}>
+          오늘의 추천 식단
+        </div>
+      </div>
+
+      <div style={{
+        padding: layout === 'full' ? '24px 0 0' : '24px 28px 0',
+        display: 'flex', justifyContent: 'center',
+      }}>
+        {layout === 'full' ? (
+          <MealVisual meal={meal} size={346} rounded={0} />
+        ) : (
+          <MealVisual meal={meal} size={300} rounded={32} />
+        )}
+      </div>
+
+      <div style={{ padding: '28px 28px 0', textAlign: 'center' }}>
+        <div style={{
+          fontSize: 56 * scale, fontWeight: 900, color: theme.text,
+          letterSpacing: '-0.02em', lineHeight: 1.1,
+        }}>
+          {meal.name}
+        </div>
+        <div style={{
+          fontSize: 22 * scale, color: theme.muted, fontWeight: 600,
+          marginTop: 14,
+        }}>
+          {meal.side}
+        </div>
+      </div>
+
+      <div style={{ padding: '24px 28px 0' }}>
+        <div style={{
+          background: theme.card, borderRadius: 24,
+          padding: '22px 24px',
+          border: `2px solid ${theme.border}`,
+          display: 'flex', alignItems: 'center', gap: 16,
+        }}>
+          <div style={{
+            width: 56, height: 56, borderRadius: '50%',
+            background: theme.accentSoft,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path d="M16 27s-10-6-10-14a6 6 0 0 1 10-4 6 6 0 0 1 10 4c0 8-10 14-10 14z"
+                fill={theme.accent} />
+            </svg>
+          </div>
+          <div>
+            <div style={{ fontSize: 18 * scale, color: theme.muted, fontWeight: 700, marginBottom: 4 }}>
+              {meal.badge}
+            </div>
+            <div style={{ fontSize: 24 * scale, color: theme.text, fontWeight: 700, lineHeight: 1.35 }}>
+              {meal.benefit}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
+          {[
+            { l: '열량', v: `${meal.kcal}`, u: 'kcal' },
+            { l: '짠맛', v: meal.salt, u: '' },
+            { l: '시간', v: `${meal.time}`, u: '분' },
+          ].map(s => (
+            <div key={s.l} style={{
+              flex: 1, background: theme.card, borderRadius: 18,
+              padding: '14px 8px', textAlign: 'center',
+              border: `1.5px solid ${theme.border}`,
+            }}>
+              <div style={{ fontSize: 17 * scale, color: theme.muted, fontWeight: 600, marginBottom: 4 }}>
+                {s.l}
+              </div>
+              <div style={{ fontSize: 22 * scale, color: theme.text, fontWeight: 800 }}>
+                {s.v}<span style={{ fontSize: 15 * scale, fontWeight: 600 }}> {s.u}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ padding: '24px 28px 36px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <button onClick={onDetail} style={{
+          width: '100%', padding: '26px',
+          background: theme.accent, color: '#fff',
+          border: 'none', borderRadius: 28,
+          fontSize: 28 * scale, fontWeight: 800,
+          cursor: 'pointer', fontFamily: 'inherit',
+          boxShadow: `0 6px 0 ${theme.accentShadow}, 0 8px 20px ${theme.accentShadow}55`,
+        }}>
+          자세히 보기
+        </button>
+        <button onClick={onAgain} style={{
+          width: '100%', padding: '24px',
+          background: theme.card, color: theme.text,
+          border: `2.5px solid ${theme.accent}`,
+          borderRadius: 28,
+          fontSize: 26 * scale, fontWeight: 800,
+          cursor: 'pointer', fontFamily: 'inherit',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+        }}>
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M4 13a9 9 0 0 1 15-6.7M22 13a9 9 0 0 1-15 6.7M19 3v5h-5M7 23v-5h5"
+              stroke={theme.text} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          </svg>
+          다른 메뉴 추천
+        </button>
+      </div>
+
+      {voiceOn && (
+        <div style={{
+          position: 'absolute', top: 56, right: 24,
+          background: theme.accent, color: '#fff',
+          padding: '8px 14px', borderRadius: 999,
+          fontSize: 16 * scale, fontWeight: 700,
+          display: 'flex', alignItems: 'center', gap: 6,
+        }}>
+          <span style={{
+            width: 8, height: 8, borderRadius: '50%', background: '#fff',
+            animation: 'pulse 1.2s ease-in-out infinite',
+          }} />
+          읽어드리는 중
+          <style>{`@keyframes pulse { 50% { opacity: 0.3; } }`}</style>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DetailScreen({ meal, onBack, theme, scale }) {
+  return (
+    <div style={{
+      minHeight: '100%', background: theme.bg,
+      paddingBottom: 40,
+    }}>
+      <div style={{ padding: '70px 28px 0' }}>
+        <button onClick={onBack} style={{
+          background: 'transparent', border: 'none', cursor: 'pointer',
+          color: theme.muted, fontSize: 22 * scale, fontWeight: 600,
+          padding: 0, fontFamily: 'inherit',
+          display: 'flex', alignItems: 'center', gap: 6,
+        }}>
+          <span style={{ fontSize: 28 * scale }}>‹</span> 돌아가기
+        </button>
+      </div>
+
+      <div style={{ padding: '24px 28px 0', textAlign: 'center' }}>
+        <MealVisual meal={meal} size={180} rounded={28} />
+        <div style={{
+          fontSize: 40 * scale, fontWeight: 900, color: theme.text,
+          marginTop: 18,
+        }}>{meal.name}</div>
+      </div>
+
+      <div style={{ padding: '32px 28px 0' }}>
+        <div style={{ fontSize: 26 * scale, fontWeight: 800, color: theme.text, marginBottom: 14 }}>
+          🥬 준비할 재료
+        </div>
+        <div style={{
+          background: theme.card, borderRadius: 24,
+          padding: '8px 4px',
+          border: `2px solid ${theme.border}`,
+        }}>
+          {meal.ingredients.map((ing, i) => (
+            <div key={i} style={{
+              padding: '18px 20px',
+              borderBottom: i < meal.ingredients.length - 1 ? `1.5px solid ${theme.border}` : 'none',
+              display: 'flex', alignItems: 'center', gap: 14,
+              fontSize: 24 * scale, color: theme.text, fontWeight: 600,
+            }}>
+              <span style={{
+                width: 32, height: 32, borderRadius: '50%',
+                background: theme.accentSoft, color: theme.accentDeep,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 16 * scale, fontWeight: 800, flexShrink: 0,
+              }}>{i + 1}</span>
+              {ing}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ padding: '32px 28px 0' }}>
+        <div style={{ fontSize: 26 * scale, fontWeight: 800, color: theme.text, marginBottom: 14 }}>
+          👩‍🍳 만드는 법
+        </div>
+        {meal.steps.map((step, i) => (
+          <div key={i} style={{
+            background: theme.card,
+            borderRadius: 22,
+            padding: '20px 22px',
+            marginBottom: 12,
+            border: `2px solid ${theme.border}`,
+            display: 'flex', gap: 16, alignItems: 'flex-start',
+          }}>
+            <div style={{
+              width: 48, height: 48, borderRadius: '50%',
+              background: theme.accent, color: '#fff',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 22 * scale, fontWeight: 800, flexShrink: 0,
+            }}>{i + 1}</div>
+            <div style={{
+              fontSize: 24 * scale, color: theme.text, fontWeight: 600,
+              lineHeight: 1.4, paddingTop: 8,
+            }}>{step}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ padding: '20px 28px 0' }}>
+        <div style={{
+          background: theme.accentSoft, borderRadius: 24,
+          padding: '22px 24px',
+          border: `2px solid ${theme.accent}`,
+        }}>
+          <div style={{ fontSize: 20 * scale, fontWeight: 800, color: theme.accentDeep, marginBottom: 8 }}>
+            💡 건강 한마디
+          </div>
+          <div style={{ fontSize: 23 * scale, color: theme.text, fontWeight: 600, lineHeight: 1.45 }}>
+            {meal.tips}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ padding: '28px 28px 0' }}>
+        <button onClick={onBack} style={{
+          width: '100%', padding: '26px',
+          background: theme.accent, color: '#fff',
+          border: 'none', borderRadius: 28,
+          fontSize: 28 * scale, fontWeight: 800,
+          cursor: 'pointer', fontFamily: 'inherit',
+          boxShadow: `0 6px 0 ${theme.accentShadow}, 0 8px 20px ${theme.accentShadow}55`,
+        }}>
+          알겠어요
+        </button>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, {
+  meals, MealVisual, HomeScreen, LoadingScreen, ResultScreen, DetailScreen,
+});
+</script>
+
+<!-- ═══════════════════════ main app ═══════════════════════ -->
+<script type="text/babel" data-presets="env,react">
+const TWEAK_DEFAULTS = {
+  "palette": ["#B49ACB", "#8E72A8", "#EFE7F3"],
+  "textScale": 1,
+  "resultLayout": "card",
+  "screen": "result"
+};
+
+const PALETTES = {
+  '#E89B5C': {
+    bg: '#F7EFE0', card: '#FFFCF5', border: '#EADFC9', text: '#3D2E1F', muted: '#8A7560',
+    accent: '#E89B5C', accentDeep: '#C97A3A', accentSoft: '#FBE5CC', accentShadow: '#B36A2C',
+  },
+  '#D97757': {
+    bg: '#F5EBDD', card: '#FFFCF4', border: '#E8DCC4', text: '#3A2818', muted: '#8A6F58',
+    accent: '#D97757', accentDeep: '#B45A3E', accentSoft: '#F7DCC8', accentShadow: '#9D4A2E',
+  },
+  '#C8946A': {
+    bg: '#F4ECDB', card: '#FFFBF1', border: '#E5D8BD', text: '#3C2D1B', muted: '#8C7359',
+    accent: '#C8946A', accentDeep: '#A0734A', accentSoft: '#F1E0C6', accentShadow: '#86603E',
+  },
+  '#7A9A6E': {
+    bg: '#F1ECDB', card: '#FBF8EE', border: '#DFD8BF', text: '#2F2E20', muted: '#736E50',
+    accent: '#7A9A6E', accentDeep: '#5C7E52', accentSoft: '#DDE7CE', accentShadow: '#476841',
+  },
+  '#B49ACB': {
+    bg: '#F1EBF5', card: '#FBF7FD', border: '#E1D5E8', text: '#2E2438', muted: '#7C6B8C',
+    accent: '#B49ACB', accentDeep: '#8E72A8', accentSoft: '#E5D9EE', accentShadow: '#6B527F',
+  },
+};
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const accent = Array.isArray(t.palette) ? t.palette[0] : t.palette;
+  const theme = PALETTES[accent] || PALETTES['#B49ACB'];
+
+  const [screen, setScreen] = React.useState(t.screen || 'home');
+  const [mealId, setMealId] = React.useState(meals[0].id);
+  const [voiceOn, setVoiceOn] = React.useState(false);
+  const meal = meals.find(m => m.id === mealId) || meals[0];
+
+  React.useEffect(() => {
+    if (t.screen && t.screen !== screen) setScreen(t.screen);
+  }, [t.screen]);
+
+  const pickRandom = () => {
+    setScreen('loading');
+    setTimeout(() => {
+      const others = meals.filter(m => m.id !== mealId);
+      const next = others[Math.floor(Math.random() * others.length)];
+      setMealId(next.id);
+      setScreen('result');
+    }, 1400);
+  };
+
+  let currentScreen;
+  if (screen === 'home') {
+    currentScreen = <HomeScreen onPick={pickRandom} theme={theme} scale={t.textScale} voiceOn={voiceOn} setVoiceOn={setVoiceOn} />;
+  } else if (screen === 'loading') {
+    currentScreen = <LoadingScreen theme={theme} scale={t.textScale} />;
+  } else if (screen === 'result') {
+    currentScreen = <ResultScreen
+      meal={meal}
+      onAgain={pickRandom}
+      onDetail={() => setScreen('detail')}
+      onHome={() => setScreen('home')}
+      theme={theme} scale={t.textScale} voiceOn={voiceOn}
+      layout={t.resultLayout}
+    />;
+  } else if (screen === 'detail') {
+    currentScreen = <DetailScreen meal={meal} onBack={() => setScreen('result')} theme={theme} scale={t.textScale} />;
+  }
+
+  return (
+    <div data-screen-label={`0${['home','loading','result','detail'].indexOf(screen)+1} ${screen}`}>
+      <IOSDevice width={402} height={874}>
+        <div style={{ height: '100%', overflow: 'auto', background: theme.bg }}>
+          {currentScreen}
+        </div>
+      </IOSDevice>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="화면 이동" />
+        <TweakRadio label="화면" value={screen}
+          options={['home', 'result', 'detail']}
+          onChange={(v) => { setScreen(v); setTweak('screen', v); }} />
+
+        <TweakSection label="분위기" />
+        <TweakColor label="색상 팔레트" value={t.palette}
+          options={[
+            ['#B49ACB', '#8E72A8', '#EFE7F3'],
+            ['#E89B5C', '#C97A3A', '#F7EAD6'],
+            ['#D97757', '#B45A3E', '#F5EBDD'],
+            ['#C8946A', '#A0734A', '#F4ECDB'],
+            ['#7A9A6E', '#5C7E52', '#F1ECDB'],
+          ]}
+          onChange={(v) => setTweak('palette', v)} />
+
+        <TweakSection label="접근성" />
+        <TweakRadio label="글씨 크기"
+          value={t.textScale === 0.9 ? '보통' : t.textScale === 1.0 ? '큼' : '아주 큼'}
+          options={['보통', '큼', '아주 큼']}
+          onChange={(v) => setTweak('textScale',
+            v === '보통' ? 0.9 : v === '큼' ? 1.0 : 1.15)} />
+        <TweakToggle label="음성 안내 표시" value={voiceOn}
+          onChange={setVoiceOn} />
+
+        <TweakSection label="결과 화면 레이아웃" />
+        <TweakRadio label="음식 사진" value={t.resultLayout}
+          options={['card', 'full']}
+          onChange={(v) => setTweak('resultLayout', v)} />
+      </TweaksPanel>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
